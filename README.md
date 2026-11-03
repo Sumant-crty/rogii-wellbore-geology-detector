@@ -2,7 +2,7 @@
 
 Predicting **True Vertical Thickness (TVT)** along the unseen part of horizontal wells from gamma-ray (GR) logs and offset-well information. Built for the Kaggle competition *ROGII Wellbore Geology Prediction*.
 
-> **Status:** working pipeline. Fill in the `TODO` results below from your own run before publishing.
+> **Status:** complete pipeline, awaiting its first full run on the competition data. Validation results will be added here after that run.
 
 ## Problem
 
@@ -30,25 +30,24 @@ Five independent estimators, each exploiting a different signal, are blended by 
 
 **Feature engineering.** Rolling GR statistics (mean, std, min, max, median), first and second differences, TVT-input rolling features, azimuth and inclination per step, and turn rate.
 
-## Results
+## Evaluation
 
-| Method | Mean CV RMSE (ft) |
-|---|---|
-| contact | TODO |
-| pf | TODO |
-| beam | TODO |
-| knn | TODO |
-| offset | TODO |
-| **Weighted ensemble** | TODO |
+The last cell of the notebook evaluates every method on training wells whose hidden-zone TVT is known, and prints and saves (`cv_results.csv`) the mean and spread of RMSE per well for:
 
-Public / private leaderboard score: TODO
+- **identity baseline:** the last known TVT held constant (any method must beat this to be useful),
+- each of the five methods,
+- the ensemble with weights tuned on the same wells (slightly optimistic), and
+- the ensemble with **leave-one-well-out** weights (the honest estimate to quote).
+
+The offset-well prior excludes the well being predicted from its own neighbours, so no well can see its own answer.
 
 ## Repository layout
 
 ```
 notebooks/
   rogii_wellbore_geology.ipynb    main pipeline
-  experiments/                    earlier iterations
+  experiments/                    earlier iterations (exploratory; their saved outputs
+                                  come from generated placeholder data, not competition data)
 requirements.txt
 ```
 
